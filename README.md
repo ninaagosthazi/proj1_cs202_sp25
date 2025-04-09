@@ -7,9 +7,23 @@ In this assignment, we’re building a system to **rank and analyze regular slic
 Your work will be organized into **four tasks**.
 
 You must use:
-- `@dataclass(frozen=True)` for all your data definitions
-- **External functions only** (no class methods)
-- **Recursive functions** for list processing
+- `@dataclass(frozen=True)` for all your data definitions  
+- **External functions only** (no class methods)  
+- **Recursive functions** for list processing  
+- **Correct type hinting** for all functions and data structures  
+  > ✅ *We recommend using a VS Code extension like* `Pylance` *or* `Pyright` *to check type hints and catch errors early*
+
+---
+
+## ⚠️ Important Setup Step Before You Begin
+
+If you are using **GitHub Codespaces**, make sure to run the following command in the terminal **before you start coding**:
+
+```bash
+git pull --no-rebase
+```
+
+This ensures you have the most up-to-date files (like `basic-tests.py`) from the starter repository before making any edits.
 
 ---
 
@@ -78,51 +92,59 @@ Your list must include:
    - and too much ocean
 
 > Use rough estimates. Approximate within:
-> - ~5% for latitude/longitude
+> - ~5% for latitude/longitude  
 > - Factor of 10 for population or emissions  
 > Don’t spend more than 5–10 minutes researching numbers.
 
 ---
 
-## ✅ Task 3: Implement External Functions
+## ✅ Task 3: Implement External Functions (with Design Recipe)
 
 You must implement **external functions only** (do not define any methods inside the classes).  
 Functions that process lists **must be recursive**.
 
----
+### 🧪 Before you write any function logic:
+For each function below, you must:
+1. **Write your tests first** in a file called `test_student.py`
+2. Write at least **1 test per function**
+3. Confirm your test(s) pass before continuing
 
-### Function: `emissions_per_capita(rc)`
-
-Takes a `RegionCondition` and returns the tons of CO₂-equivalent **emitted per person** in the region per year. Avoid division by zero.
-
----
-
-### Function: `area(gr)`
-
-Takes a `GlobeRect` and returns the estimated **area in square kilometers**, using this formula:
-
-- ignore curvature, of the earth treat as a rectangle. 
-- Each degree ≈ 111 km on the Earth.
+> Your code will be evaluated using **hidden test cases**, so feel confident that your implementation handles **edge cases, invalid input, and boundary conditions**.
 
 ---
 
-### Function: `emissions_per_square_km(rc)`
+### 🔹 Subtask 3.1: `emissions_per_capita(rc)`
 
-Takes a `RegionCondition` and returns the **tons of CO₂-equivalent per square kilometer**.  
-hint: (Uses the area of the region.)
+Takes a `RegionCondition` and returns the tons of CO₂-equivalent **emitted per person** in the region per year. Avoid division by zero — return `0.0` if population is zero.
 
 ---
 
-### Function: `densest(rc_list)`
+### 🔹 Subtask 3.2: `area(gr)`
 
-Takes a list of `RegionCondition` values and returns the **name of the region with the highest population density**, calculated as:
+Takes a `GlobeRect` and returns the estimated **area in square kilometers**.  
+Ignore Earth's curvature — treat the region as a flat rectangle.  
+Each degree of latitude and longitude ≈ 111 km.
+
+---
+
+### 🔹 Subtask 3.3: `emissions_per_square_km(rc)`
+
+Takes a `RegionCondition` and returns the **tons of CO₂-equivalent per square kilometer**.
+
+> Hint: Use the `area` function.
+
+---
+
+### 🔹 Subtask 3.4: `densest(rc_list)`
+
+Takes a list of `RegionCondition` values and returns the **name** of the region with the highest population density, calculated as:
 
 ```
 population / area
 ```
 
-> Must be implemented **recursively**.  
-> You may not use `max`, `for`, `while`, or list comprehensions.
+> This function must be **recursive**.  
+> Do not use `max`, `for`, `while`, or list comprehensions.
 
 ---
 
@@ -130,29 +152,33 @@ population / area
 
 Now we’ll simulate how regions change over time based on terrain-specific population growth.
 
+### 🧪 Before you write any logic:
+Follow the same process as Task 3:
+1. Write at least one test in `test_student.py`
+2. Use your test case to guide your implementation
+
 ---
 
-### Function: `project_condition(rc, years)`
+### 🔹 Subtask 4.1: `project_condition(rc, years)`
 
 Takes a `RegionCondition` and a number of years.  
-Returns a **new RegionCondition** that represents the state of the region after that many years have passed.
+Returns a **new RegionCondition** representing the projected state of the region after the given number of years.
 
-Rules:
-- Population grows exponentially each year based on terrain type.
-- Emissions grow proportionally to population.
-- The region and terrain remain unchanged.
-- The `year` should be updated by the given number of years.
+#### Rules:
+- Population grows exponentially based on the terrain type’s growth rate
+- Emissions scale proportionally with population
+- The region and terrain stay the same
+- The `year` field increases by `years`
 
-Growth rates per terrain:
-| Terrain     | Annual growth rate |
+| Terrain     | Annual Growth Rate |
 |-------------|--------------------|
 | `"ocean"`     | +0.0001           |
 | `"mountains"` | +0.0005           |
 | `"forest"`    | -0.00001          |
 | `"other"`     | +0.0003           |
 
-> You are encouraged to write **helper functions** to make testing easier.  
-> This function must return a **new object** — do **not mutate** the original `RegionCondition`.
+> You are encouraged to define **helper functions** for population growth, emissions scaling, etc.  
+> Do **not mutate** the original `RegionCondition` — return a new one.
 
 ---
 
@@ -169,6 +195,33 @@ from dataclasses import dataclass
 sys.setrecursionlimit(10**6)
 ```
 
-- **Do not import anything else**
-- Use **recursion**, not loops or comprehensions, for list processing
-- Follow the design recipe (purpose, type comment, examples/tests, definition)
+You must:
+- Use **recursion** for all list processing
+- Avoid all loops and comprehensions
+- Write **all behavior as external functions** — no class methods
+- Use **correct type hinting** throughout your code  
+  > ✅ *We recommend using a VS Code extension like* `Pylance` *or* `Pyright` *to check type hints and catch errors early*
+- Follow the **design recipe**:
+  1. Purpose statement  
+  2. Type comment  
+  3. One or more examples/tests  
+  4. Function definition
+
+---
+
+## 📤 Handin Instructions
+
+You must commit and push the following files to your GitHub Classroom repository:
+
+- `lab1.py` – your main implementation file  
+- `test_1.py` – your test suite with at least one test per function  
+
+A file called `test_1.py` is included to check that:
+- Function names match
+- Argument counts and return types are correct
+
+### ✅ Reminder:
+- Do **not edit** `test_1.py`
+- Ensure both `lab1.py` and `test_student.py` are committed and pushed
+- Push your code to GitHub — verify your changes appear on the GitHub website
+- You won't see a green check mark, look at the action workflow auto-grader output. 

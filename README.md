@@ -37,10 +37,10 @@ Define **three immutable data classes** using `@dataclass(frozen=True)`. These w
 
 Represents a rectangular region of the globe. It should contain the following attributes:
 
-- `lo_lat`: the lower latitude in degrees (between -90 and 90 inclusive)
-- `hi_lat`: the upper latitude in degrees (greater than `lo_lat`)
-- `west_long`: the western longitude in degrees (between -180 and 180)
-- `east_long`: the eastern longitude in degrees (between -180 and 180)
+- `lo_lat`: the lower latitude in degrees 
+- `hi_lat`: the upper latitude in degrees 
+- `west_long`: the western longitude in degrees
+- `east_long`: the eastern longitude in degrees
 
 > Note: `west_long` may be greater than `east_long` for regions crossing the international date line.
 
@@ -165,7 +165,7 @@ For example:
 
 So we fix it:  
 If the result is negative, it means we wrapped around the back side of the globe.  
-We add a full circle (360° or \(2\pi\) radians) to turn that negative into the correct positive value.
+We add a full circle (360° or \(2*pi\) radians) to turn that negative into the correct positive value.
 
 This adjustment makes sure the computed width always represents the **shortest, correct path going east**, even across the date line.
 
